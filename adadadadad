@@ -74,3 +74,6 @@ return {
       Argument = "DERHOODMOUSEPOS666^",
       Remote = "WorkSpace",
       BodyEffects = "K.O"
+    }
+    },
+    }
