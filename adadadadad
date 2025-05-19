@@ -1,4 +1,10 @@
-local Games = {
+
+
+
+
+
+return {
+  Games = {
     DaHood = {
     ID = 2788229376,
     Details = {
@@ -68,6 +74,3 @@ local Games = {
       Argument = "DERHOODMOUSEPOS666^",
       Remote = "WorkSpace",
       BodyEffects = "K.O"
-    }
-    },
-    }
