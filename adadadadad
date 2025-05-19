@@ -1,10 +1,4 @@
-
-
-
-
-
-return {
-  Games = {
+local Games = {
     DaHood = {
     ID = 2788229376,
     Details = {
@@ -12,7 +6,7 @@ return {
       Argument = "UpdateMousePosI2",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     DaHoodMacro = {
     ID = 16033173781,
@@ -21,7 +15,7 @@ return {
       Argument = "UpdateMousePosI2",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     DEFHOOD = {
     ID = 16453955999,
@@ -30,7 +24,7 @@ return {
       Argument = "UpdateMousePosI",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     DaHoodVC = {
     ID = 7213786345,
@@ -39,7 +33,7 @@ return {
       Argument = "UpdateMousePosI",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     HoodCustoms = {
     ID = 9825515356,
@@ -47,7 +41,7 @@ return {
       Name = "Hood Customs",
       Argument = "MousePosUpdate",
       Remote = "MainEvent"
-    }
+        }
     },
     MayHood = {
     ID = 77852114927492,
@@ -56,16 +50,16 @@ return {
       Argument = "UpdateMousePosI2",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     DeeHood = {
-    ID = 132661165235532,
+    ID = 102372656720272,
     Details = {
       Name = "Dee Hood",
       Argument = "UpdateMousePosI",
       Remote = "MainEvent",
       BodyEffects = "K.O"
-    }
+        }
     },
     DerHood = {
     ID = 105028250868995,
@@ -74,6 +68,9 @@ return {
       Argument = "DERHOODMOUSEPOS666^",
       Remote = "WorkSpace",
       BodyEffects = "K.O"
-    }
+        }
     },
-    }
+}
+
+return ags
+
