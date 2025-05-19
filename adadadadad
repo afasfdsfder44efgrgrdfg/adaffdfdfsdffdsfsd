@@ -1,0 +1,73 @@
+local Games = {
+    DaHood = {
+    ID = 2788229376,
+    Details = {
+      Name = "Da Hood",
+      Argument = "UpdateMousePosI2",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    DaHoodMacro = {
+    ID = 16033173781,
+    Details = {
+      Name = "Da Hood Macro",
+      Argument = "UpdateMousePosI2",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    DEFHOOD = {
+    ID = 16453955999,
+    Details = {
+      Name = "DEF HOOD",
+      Argument = "UpdateMousePosI",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    DaHoodVC = {
+    ID = 7213786345,
+    Details = {
+      Name = "Da Hood VC",
+      Argument = "UpdateMousePosI",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    HoodCustoms = {
+    ID = 9825515356,
+    Details = {
+      Name = "Hood Customs",
+      Argument = "MousePosUpdate",
+      Remote = "MainEvent"
+    }
+    },
+    MayHood = {
+    ID = 77852114927492,
+    Details = {
+      Name = "may Hood",
+      Argument = "UpdateMousePosI2",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    DeeHood = {
+    ID = 132661165235532,
+    Details = {
+      Name = "Dee Hood",
+      Argument = "UpdateMousePosI",
+      Remote = "MainEvent",
+      BodyEffects = "K.O"
+    }
+    },
+    DerHood = {
+    ID = 105028250868995,
+    Details = {
+      Name = "Der Hood",
+      Argument = "DERHOODMOUSEPOS666^",
+      Remote = "WorkSpace",
+      BodyEffects = "K.O"
+    }
+    },
+    }
