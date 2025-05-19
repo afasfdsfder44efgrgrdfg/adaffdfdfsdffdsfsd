@@ -53,7 +53,7 @@ return {
         }
     },
     DeeHood = {
-        ID = 102372656720272,
+        ID = 132661165235532,
         Details = {
             Name = "Dee Hood",
             Argument = "UpdateMousePosI",
