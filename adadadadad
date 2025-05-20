@@ -61,12 +61,38 @@ return {
             BodyEffects = "K.O"
         }
     },
+    DaStrike = {
+        ID = 15186202290,
+        Details = {
+            Name = "Da Strike",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+            BodyEffects = "K.O"
+        }
+    },
+    ARhood = {
+        ID = 7909404138,
+        Details = {
+            Name = "AR hood",
+            Argument = "UpdateMousePos",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
+    },
+    KatanaHood = {
+        ID = 97268065443141,
+        Details = {
+            Name = "Katana Hood",
+            Argument = "UpdateMousePos",
+            Remote = "MainEvent",
+        }
+    },
     DerHood = {
         ID = 105028250868995,
         Details = {
             Name = "Der Hood",
             Argument = "DERHOODMOUSEPOS666^",
-            Remote = "RemoteEvent",
+            Remote = "MainRemoteEvent",
             BodyEffects = "K.O"
         }
     }
