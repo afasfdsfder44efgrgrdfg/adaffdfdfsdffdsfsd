@@ -92,8 +92,7 @@ return {
         Details = {
             Name = "Der Hood",
             Argument = "DERHOODMOUSEPOS666",
-            Remote = "MainRemoteEvent",
-            BodyEffects = "K.O"
+            Remote = "DERHOODMOUSEPOS666^",
         }
     }
 }
