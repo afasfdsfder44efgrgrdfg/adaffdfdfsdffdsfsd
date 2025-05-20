@@ -66,7 +66,7 @@ return {
         Details = {
             Name = "Der Hood",
             Argument = "DERHOODMOUSEPOS666^",
-            Remote = "WorkSpace",
+            Remote = "MainEvent",
             BodyEffects = "K.O"
         }
     }
