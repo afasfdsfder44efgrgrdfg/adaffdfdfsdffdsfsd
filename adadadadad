@@ -76,7 +76,6 @@ return {
             Name = "AR hood",
             Argument = "UpdateMousePos",
             Remote = "MainEvent",
-            BodyEffects = "K.O"
         }
     },
     KatanaHood = {
@@ -144,7 +143,7 @@ return {
         }
     },
     DerHood = {
-        ID = 138293393214382,
+        ID = 105028250868995,
         Details = {
             Name = "Der Hood",
             Argument = "DERHOODMOUSEPOS666^",
