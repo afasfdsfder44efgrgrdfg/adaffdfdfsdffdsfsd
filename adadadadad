@@ -85,14 +85,16 @@ return {
             Name = "Katana Hood",
             Argument = "UpdateMousePos",
             Remote = "MainEvent",
+
         }
     },
-    DerHood = {
-        ID = 105028250868995,
+    DeaHood = {
+        ID = 84924278299650,
         Details = {
-            Name = "Dee Hood",
-            Argument = "UpdateMousePos",
-            Remote = "MainEvent",
+            Name = "Dea Hood",
+            Argument = "DEAHOODMOUSEPOSx3",
+            Remote = "MainRemoteEvent",
+            BodyEffects = "K.O"
         }
     }
 }
