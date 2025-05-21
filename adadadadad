@@ -33,7 +33,7 @@ return {
     },
     {
         ID = 7909404138,
-        Details = { Name = "AR hood", Argument = "DEAHOODMOUSEPOSx3^3", Remote = "MAINEVENT" }
+        Details = { Name = "AR hood", Argument = "DEAHOODMOUSEPOSx3^3", Remote = "MainRemoteEvent" }
     },
     {
         ID = 97268065443141,
