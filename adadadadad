@@ -1,78 +1,174 @@
-return {
-    {
+local Games = {
+    DaHood = {
         ID = 2788229376,
-        Details = { Name = "Da Hood", Argument = "UpdateMousePosI2", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Da Hood",
+            Argument = "UpdateMousePosI2",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    DaHoodMacro = {
         ID = 16033173781,
-        Details = { Name = "Da Hood Macro", Argument = "UpdateMousePosI2", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Da Hood Macro",
+            Argument = "UpdateMousePosI2",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    DEFHOOD = {
         ID = 16453955999,
-        Details = { Name = "DEF HOOD", Argument = "UpdateMousePosI", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "DEF HOOD",
+            Argument = "UpdateMousePosI",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    DaHoodVC = {
         ID = 7213786345,
-        Details = { Name = "Da Hood VC", Argument = "UpdateMousePosI", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Da Hood VC",
+            Argument = "UpdateMousePosI",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    HoodCustoms = {
         ID = 9825515356,
-        Details = { Name = "Hood Customs", Argument = "MousePosUpdate", Remote = "MainEvent" }
+        Details = {
+            Name = "Hood Customs",
+            Argument = "MousePosUpdate",
+            Remote = "MainEvent"
+        }
     },
-    {
+    MayHood = {
         ID = 77852114927492,
-        Details = { Name = "May Hood", Argument = "UpdateMousePosI2", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "May Hood",
+            Argument = "UpdateMousePosI2",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    DeeHood = {
         ID = 132661165235532,
-        Details = { Name = "Dee Hood", Argument = "UpdateMousePosI", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Dee Hood",
+            Argument = "UpdateMousePosI",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    DaStrike = {
         ID = 15186202290,
-        Details = { Name = "Da Strike", Argument = "MOUSE", Remote = "MAINEVENT", BodyEffects = "K.O" }
+        Details = {
+            Name = "Da Strike",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+            BodyEffects = "K.O"
+        }
     },
-    {
+    ARhood = {
         ID = 7909404138,
-        Details = { Name = "AR hood", Argument = "DEAHOODMOUSEPOSx3^3", Remote = "MainRemoteEvent" }
+        Details = {
+            Name = "AR hood",
+            Argument = "DEAHOODMOUSEPOSx3^3",
+            Remote = "MainRemoteEvent",
+        }
     },
-    {
+    KatanaHood = {
         ID = 97268065443141,
-        Details = { Name = "Katana Hood", Argument = "UpdateMousePos", Remote = "Fireserver" }
+        Details = {
+            Name = "Katana Hood",
+            Argument = "UpdateMousePos",
+            Remote = "Fireserver",
+
+        }
     },
-    {
+    DaDownhillPSXbox = {
         ID = 77369032494150,
-        Details = { Name = "Da Downhill [PS/Xbox]", Argument = "MOUSE", Remote = "MAINEVENT" }
+        Details = {
+            Name = "Da Downhill [PS/Xbox]",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+
+        }
     },
-    {
+    DaBank = {
         ID = 132023669786646,
-        Details = { Name = "Da Bank", Argument = "MOUSE", Remote = "MAINEVENT" }
+        Details = {
+            Name = "Da Bank",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+
+        }
     },
-    {
+    DaUphill = {
         ID = 84366677940861,
-        Details = { Name = "Da Uphill", Argument = "MOUSE", Remote = "MAINEVENT" }
+        Details = {
+            Name = "Da Uphill",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+
+        }
     },
-    {
+    DaHoodBotAimTrainer = {
         ID = 120182610838514,
-        Details = { Name = "Da Hood Bot Aim Trainer", Argument = "MOUSE", Remote = "MAINEVENT" }
+        Details = {
+            Name = "Da Hood Bot Aim Trainer",
+            Argument = "MOUSE",
+            Remote = "MAINEVENT",
+
+        }
     },
-    {
+    HoodAimTrainer1v1 = {
         ID = 138673949835356,
-        Details = { Name = "1v1 Hood Aim Trainer", Argument = "UpdateMousePos", Remote = "MainEvent" }
+        Details = {
+            Name = "1v1 Hood Aim Trainer",
+            Argument = "UpdateMousePos",
+            Remote = "MainEvent",
+
+        }
     },
-    {
+    NewHood = {
         ID = 104596910487466,
-        Details = { Name = "New Hood", Argument = "UpdateMousePos", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "New Hood",
+            Argument ="UpdateMousePos",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+
+        }
     },
-    {
+    DerHood = {
         ID = 105028250868995,
-        Details = { Name = "Der Hood", Argument = "DERHOODMOUSEPOS666^", Remote = "MainRemoteEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Der Hood",
+            Argument = "DERHOODMOUSEPOS666^",
+            Remote = "MainRemoteEvent",
+            BodyEffects = "K.O"
+
+        }
     },
-    {
+    NewHood = {
         ID = 71189885129233,
-        Details = { Name = "Del Hood Aim", Argument = "UpdateMousePos", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Del Hood Aim",
+            Argument = "UpdateMousePos",
+            Remote = "MainEvent",
+            BodyEffects = "K.O"
+
+        }
     },
-    {
+    DeaHood = {
         ID = 84924278299650,
-        Details = { Name = "Dea Hood", Argument = "DEAHOODMOUSEPOSx3^3", Remote = "MainRemoteEvent", BodyEffects = "K.O" }
+        Details = {
+            Name = "Dea Hood",
+            Argument = "DEAHOODMOUSEPOSx3^3",
+            Remote = "MainRemoteEvent",
+            BodyEffects = "K.O"
+        }
     }
 }
