@@ -1,4 +1,4 @@
-1return {
+return {
     {
         ID = 2788229376,
         Details = { Name = "Da Hood", Argument = "UpdateMousePosI2", Remote = "MainEvent", BodyEffects = "K.O" }
