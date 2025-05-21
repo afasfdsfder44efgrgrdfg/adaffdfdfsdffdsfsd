@@ -25,7 +25,7 @@ return {
     },
     {
         ID = 132661165235532,
-        Details = { Name = "Dee Hood", Argument = "UpdateMousePosI", Remote = "Fireserver", BodyEffects = "K.O" }
+        Details = { Name = "Dee Hood", Argument = "UpdateMousePosI", Remote = "MainEvent", BodyEffects = "K.O" }
     },
     {
         ID = 15186202290,
