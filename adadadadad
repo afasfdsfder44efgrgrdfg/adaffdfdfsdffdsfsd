@@ -25,7 +25,7 @@ return {
     },
     {
         ID = 132661165235532,
-        Details = { Name = "Dee Hood", Argument = "UpdateMousePosI", Remote = "MainEvent", BodyEffects = "K.O" }
+        Details = { Name = "Dee Hood", Argument = "UpdateMousePosI", Remote = "Fireserver", BodyEffects = "K.O" }
     },
     {
         ID = 15186202290,
@@ -33,7 +33,7 @@ return {
     },
     {
         ID = 7909404138,
-        Details = { Name = "AR hood", Argument = "UpdateMousePos", Remote = "MainEvent" }
+        Details = { Name = "AR hood", Argument = "DEAHOODMOUSEPOSx3^3", Remote = "MainRemoteEvent" }
     },
     {
         ID = 97268065443141,
