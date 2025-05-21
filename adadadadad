@@ -92,7 +92,7 @@ return {
         ID = 84924278299650,
         Details = {
             Name = "Dea Hood",
-            Argument = "DEAHOODMOUSEPOSx3",
+            Argument = "DEAHOODMOUSEPOSx3^3",
             Remote = "MainRemoteEvent",
             BodyEffects = "K.O"
         }
