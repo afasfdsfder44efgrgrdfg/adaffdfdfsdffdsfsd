@@ -90,9 +90,9 @@ return {
     DerHood = {
         ID = 105028250868995,
         Details = {
-            Name = "Der Hood",
-            Argument = "DERHOODMOUSEPOS666",
-            Remote = "DERHOODMOUSEPOS666^",
+            Name = "Dee Hood",
+            Argument = "UpdateMousePos",
+            Remote = "MainEvent",
         }
     }
 }
