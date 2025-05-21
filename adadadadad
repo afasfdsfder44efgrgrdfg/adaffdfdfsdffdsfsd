@@ -84,7 +84,7 @@ return {
         Details = {
             Name = "Katana Hood",
             Argument = "UpdateMousePos",
-            Remote = "MainEvent",
+            Remote = "Fireserver",
 
         }
     },
