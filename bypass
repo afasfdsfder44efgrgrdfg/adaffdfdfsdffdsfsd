@@ -1,1 +1,31 @@
+-- ===== Da Hood Bypass =====
+local bypass = {
+    dahood = function()
+        local _game = getrawmetatable(game)
+        setreadonly(_game, false)
+        local ___namecall = _game.__namecall
+        _game.__namecall = newcclosure(function(...)
+            local method = getnamecallmethod()
+            local selfArg, arg2 = (...)
+            if method == "FireServer" 
+               and selfArg.Name == "MainEvent"
+               and table.find({
+                   "BreathingHAMON", "OneMoreTime", "BANREMOTE",
+                   "PERMAIDBAN", "KICKREMOTE", "BR_KICKPC",
+                   "BR_KICKMOBILE", "CHECKER_1", "TeleportDetect",
+                   "GUI_CHECK"
+               }, arg2) then
+                return
+            end
+            return ___namecall(...)
+        end)
+        setreadonly(_game, true)
+    end,
+    -- you can add other game-specific bypasses here...
+}
 
+-- Call the Da Hood bypass if we're in Da Hood
+if game.PlaceId == 2788229376 or game.PlaceId == 7213786345 then
+    bypass.dahood()
+end
+-- ===== End Da Hood Bypass =====
