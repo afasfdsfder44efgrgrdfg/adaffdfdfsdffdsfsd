@@ -1,45 +1,31 @@
--- // Game ID Check
-if game.PlaceId ~= 2788229376 then return end
+-- Da Hood Mouse.Hit / Target bypass (universal for all executors)
+if game.PlaceId == 2788229376 then
+    local mt = getrawmetatable(game)
+    setreadonly(mt, false)
+    local old = mt.__index
 
--- // Wait for full load
-repeat task.wait() until game:IsLoaded()
-
--- // Services
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
--- // Hook __namecall for Kick prevention
-local mtSuccess, mt = pcall(getrawmetatable, game)
-if mtSuccess and mt then
-    local oldNamecall = mt.__namecall
-    if oldNamecall and typeof(mt) == "table" then
-        local successUnlock = pcall(function() setreadonly(mt, false) end)
-        if successUnlock then
-            mt.__namecall = newcclosure(function(self, ...)
-                local method = getnamecallmethod and getnamecallmethod() or ""
-                if not checkcaller() and self == LocalPlayer and method == "Kick" then
-                    warn("[Bypass] Blocked a kick attempt.")
-                    return nil
+    mt.__index = newcclosure(function(self, key)
+        if not checkcaller() and self == game:GetService("Players").LocalPlayer:GetMouse() then
+            if key == "Hit" then
+                local target = GetClosestPlayer()
+                if target then
+                    local pos = PredictTargetPosition(target)
+                    if pos then
+                        return CFrame.new(pos)
+                    end
                 end
-                return oldNamecall(self, ...)
-            end)
-            pcall(function() setreadonly(mt, true) end)
+            elseif key == "Target" then
+                local target = GetClosestPlayer()
+                if target then
+                    local pos = PredictTargetPosition(target)
+                    if pos then
+                        return CFrame.new(pos)
+                    end
+                end
+            end
         end
-    end
-end
+        return old(self, key)
+    end)
 
--- // Safe getfenv protection if environment supports it
-local hasRenV, renv = pcall(getrenv)
-if hasRenV and typeof(renv) == "table" and typeof(renv.getfenv) == "function" then
-    local getfenvFunc = renv.getfenv
-    if hookfunction then
-        pcall(function()
-            hookfunction(getfenvFunc, newcclosure(function(level)
-                if not checkcaller() then
-                    return {}
-                end
-                return getfenvFunc(level)
-            end))
-        end)
-    end
+    setreadonly(mt, true)
 end
