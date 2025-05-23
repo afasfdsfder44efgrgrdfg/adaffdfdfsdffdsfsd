@@ -1,42 +1,42 @@
--- Whitelisted PlaceIds
-local allowedPlaceIds = {
-    [2788229376] = true,
-}
+-- Allowed game PlaceId
+if game.PlaceId ~= 2788229376 then return end
 
--- Wait for game to load
+-- Wait for the game to fully load
 repeat task.wait() until game:IsLoaded()
 
--- Abort if not in allowed game
-if not allowedPlaceIds[game.PlaceId] then return end
-
--- Services and Player
+-- Setup services
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Metatable Bypass Kick
-local mt = getrawmetatable(game)
-local backup = mt.__namecall
+-- Safely get and modify __namecall if possible
+local success, mt = pcall(getrawmetatable, game)
+if success and mt and typeof(mt) == "table" then
+    local oldNamecall = mt.__namecall
 
-setreadonly(mt, false)
+    -- Safely unlock metatable if possible
+    pcall(function() setreadonly(mt, false) end)
 
-mt.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    if not checkcaller() and self == LocalPlayer and method == "Kick" then
-        warn("[Bypass] Blocked Kick Attempt.")
-        return nil
-    end
-    return backup(self, ...)
-end)
-
-setreadonly(mt, true)
-
--- Safe fenv Hook (optional, some executors don't allow this)
-local envFuncs = getrenv and getrenv().getfenv
-if typeof(envFuncs) == "function" and hookfunction then
-    hookfunction(envFuncs, newcclosure(function(level)
-        if not checkcaller() then
-            return {} -- block unauthorized use
+    mt.__namecall = newcclosure(function(self, ...)
+        local method = getnamecallmethod and getnamecallmethod() or ""
+        if not checkcaller() and self == LocalPlayer and method == "Kick" then
+            warn("[Bypass] Kick attempt blocked.")
+            return nil
         end
-        return envFuncs(level)
-    end))
+        return oldNamecall(self, ...)
+    end)
+
+    pcall(function() setreadonly(mt, true) end)
+end
+
+-- Optional getfenv hook (only if supported)
+local envFuncs = getrenv and getrenv().getfenv
+if envFuncs and hookfunction then
+    pcall(function()
+        hookfunction(envFuncs, newcclosure(function(level)
+            if not checkcaller() then
+                return {} -- prevent access
+            end
+            return envFuncs(level)
+        end))
+    end)
 end
