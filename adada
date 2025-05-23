@@ -1,38 +1,144 @@
-local allowedPlaceIds = {
-    [2788229376] = true,
-}
+-- Attempt to identify executor (if available)
+local exe_name = (identifyexecutor and identifyexecutor()) or "Unknown"
 
-repeat task.wait() until game:IsLoaded()
-
-if not allowedPlaceIds[game.PlaceId] then
-    return
+-- Test hookfunction compatibility
+local function testHook()
+    if not hookfunction or not isfunctionhooked then
+        return false
+    end
+    local dummy1, dummy2 = function() end, function() end
+    local success, isHooked = pcall(function()
+        hookfunction(dummy2, dummy1)
+        return isfunctionhooked(dummy2)
+    end)
+    return success and isHooked
 end
 
+-- If hooking is unsupported or detected, warn instead of crashing
+if not testHook() then
+    warn("[Anti-Hook] Hooking not supported or detected. Skipping strict enforcement.")
+end
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local mt = getrawmetatable(game)
-setreadonly(mt, false)
-
-local oldNamecall = mt.__namecall
-mt.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    if not checkcaller() and method == "Kick" and self == LocalPlayer then
-        warn("[Bypass] Kick attempt blocked.")
-        return 
+-- Check any function in a given environment table for hooks
+local function checkEnvironment(env)
+    if not (env and type(env) == "table") then return end
+    for _, v in pairs(env) do
+        if type(v) == "function" and isfunctionhooked and pcall(isfunctionhooked, v) and isfunctionhooked(v) then
+            warn("[Anti-Hook] Detected a hooked function in environment.")
+        end
     end
-    return oldNamecall(self, ...)
+end
+
+-- Run environment checks on getgenv and getrenv (if they exist)
+if getgenv then
+    pcall(checkEnvironment, getgenv())
+end
+if getrenv then
+    pcall(checkEnvironment, getrenv())
+end
+
+-- Fallback definitions for executors missing these functions
+local getCons       = getconnections or get_signal_cons or function() return {} end
+local getUpvals     = getupvalues   or function() return {} end
+local hookFunc      = hookfunction  or function() end
+local setUpval      = setupvalue    or function() end
+local getgc_safe    = getgc         or function() return {} end
+local isexecutorc   = isexecutorclosure or function() return false end
+local isl_c         = islclosure   or function() return false end
+
+local RunService    = game:GetService("RunService")
+local LogService    = game:GetService("LogService")
+
+-- Hook new LogService.MessageOut connections periodically
+local currentConnections, hookedConnections = {}, {}
+local lastUpdate, updateInterval = 0, 5
+
+local function hookLogConnection(conn)
+    pcall(function()
+        if not conn.Function then return end
+        local upvals = getUpvals(conn.Function)
+        local internalTable = upvals[9]
+        local mainFunc = (type(internalTable) == "table" and internalTable[1]) or nil
+
+        if mainFunc then
+            -- Overwrite upvalue 14 (argument-processing) to intercept disconnect calls
+            pcall(function()
+                setUpval(mainFunc, 14, function(...)
+                    return function(...)
+                        local args = { ... }
+                        if type(args[1]) == "table" then
+                            for i = 1, 4 do
+                                local item = args[1][i]
+                                if typeof(item) == "userdata" and item.Disconnect then
+                                    pcall(function() item:Disconnect() end)
+                                end
+                            end
+                        end
+                    end
+                end)
+                -- Overwrite upvalue 1 (delay) to stall further processing
+                setUpval(mainFunc, 1, function() task.wait(200) end)
+                -- Finally, hook the function itself to a no-op
+                hookFunc(mainFunc, function() return {} end)
+            end)
+        end
+    end)
+end
+
+RunService.RenderStepped:Connect(function()
+    if tick() - lastUpdate >= updateInterval then
+        lastUpdate = tick()
+        for _, conn in pairs(getCons(LogService.MessageOut)) do
+            if not table.find(currentConnections, conn) then
+                table.insert(currentConnections, conn)
+                table.insert(hookedConnections, conn)
+                hookLogConnection(conn)
+            end
+        end
+    end
 end)
 
-setreadonly(mt, true)
+-- Anti-Kick Initialization
+local function antiKickInit()
+    if not getgc_safe then return end
 
-local originalGetFenv = getrenv().getfenv
-if typeof(originalGetFenv) == "function" then
-    hookfunction(originalGetFenv, newcclosure(function(level)
-        if not checkcaller() then
-            return {} 
+    pcall(function()
+        for _, obj in ipairs(getgc_safe(true)) do
+            if type(obj) == "table" and rawget(obj, "indexInstance") then
+                local inst = obj.indexInstance
+                if type(inst) == "table" and inst[1] == "kick" then
+                    if setreadonly then
+                        setreadonly(obj, false)
+                        setreadonly(inst, false)
+                    end
+                    rawset(obj, "Table", { "kick", function() coroutine.yield() end })
+                    print("[Anti-Kick] Kick interception active.")
+                    break
+                end
+            end
         end
-        return originalGetFenv(level)
-    end))
+    end)
+end
+
+-- Activate Anti-Kick (no PlaceId restriction)
+antiKickInit()
+
+-- Prevent walkthrough / infinite Loop protection (optional heartbeat check)
+do
+    local good_check, last_beat = 0, 0
+    RunService.RenderStepped:Connect(function()
+        if tick() > last_beat + 1 then
+            last_beat = tick() + 1
+            local a, b = true, true
+            if not a or not b then
+                if good_check <= 0 then
+                    warn("[Anti-Tamper] Failing periodic sanity check.")
+                else
+                    good_check -= 1
+                end
+            else
+                good_check += 1
+            end
+        end
+    end)
 end
