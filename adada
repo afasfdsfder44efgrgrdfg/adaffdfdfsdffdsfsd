@@ -1,55 +1,38 @@
-local allowedPlaceIds = {
-    [2788229376] = true, -- Example: Da Hood place ID
+local a = {
+    [2788229376] = true,
 }
 
 repeat task.wait() until game:IsLoaded()
 
--- Only run in allowed games
-if not allowedPlaceIds[game.PlaceId] then
+if not a[game.PlaceId] then
     return
 end
 
-local Players = game:FindService("Players")
-if not Players then return end
+local b = game:GetService("Players")
+local c = b.LocalPlayer
 
-local LocalPlayer = Players.LocalPlayer
-if not LocalPlayer then return end
+local d = getrawmetatable(game)
+local e = getrenv().setreadonly or setreadonly
+e(d, false)
 
--- Safely patch __namecall to block Kick
-local success, mt = pcall(getrawmetatable, game)
-if success and mt then
-    local backupReadonly = pcall(function() setreadonly(mt, false) end)
-    if backupReadonly then
-        local oldNamecall = mt.__namecall
-        mt.__namecall = newcclosure(function(self, ...)
-            local method = getnamecallmethod and getnamecallmethod() or ""
-            if not checkcaller and typeof(checkcaller) == "function" then
-                return oldNamecall(self, ...)
-            end
-
-            if not checkcaller() and method == "Kick" and self == LocalPlayer then
-                warn("[Bypass] Kick attempt blocked.")
-                return
-            end
-            return oldNamecall(self, ...)
-        end)
-
-        pcall(function() setreadonly(mt, true) end)
+local f = d.__namecall
+d.__namecall = newcclosure(function(self, ...)
+    local g = getnamecallmethod()
+    if not checkcaller() and g == ("K".."ick") and self == c then
+        warn("[Bypass] ".."Kick attempt blocked.")
+        return
     end
-end
+    return f(self, ...)
+end)
 
--- Safely hook getrenv().getfenv to avoid crashes
-local env = getrenv and getrenv()
-if env then
-    local originalGetFenv = rawget(env, "getfenv")
-    if typeof(originalGetFenv) == "function" and hookfunction then
-        pcall(function()
-            hookfunction(originalGetFenv, newcclosure(function(level)
-                if not checkcaller() then
-                    return {} -- Return dummy environment
-                end
-                return originalGetFenv(level)
-            end))
-        end)
-    end
+e(d, true)
+
+local h = getrenv().getfenv
+if typeof(h) == "function" then
+    hookfunction(h, newcclosure(function(i)
+        if not checkcaller() then
+            return {} -- fake environment
+        end
+        return h(i)
+    end))
 end
