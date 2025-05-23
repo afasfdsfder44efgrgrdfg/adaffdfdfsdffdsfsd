@@ -1,42 +1,29 @@
--- Allowed game PlaceId
-if game.PlaceId ~= 2788229376 then return end
 
--- Wait for the game to fully load
-repeat task.wait() until game:IsLoaded()
 
--- Setup services
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Safely get and modify __namecall if possible
-local success, mt = pcall(getrawmetatable, game)
-if success and mt and typeof(mt) == "table" then
-    local oldNamecall = mt.__namecall
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
 
-    -- Safely unlock metatable if possible
-    pcall(function() setreadonly(mt, false) end)
+local oldNamecall = mt.__namecall
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if not checkcaller() and method == "Kick" and self == LocalPlayer then
+        warn("[Bypass] Kick attempt blocked.")
+        return 
+    end
+    return oldNamecall(self, ...)
+end)
 
-    mt.__namecall = newcclosure(function(self, ...)
-        local method = getnamecallmethod and getnamecallmethod() or ""
-        if not checkcaller() and self == LocalPlayer and method == "Kick" then
-            warn("[Bypass] Kick attempt blocked.")
-            return nil
+setreadonly(mt, true)
+
+local originalGetFenv = getrenv().getfenv
+if typeof(originalGetFenv) == "function" then
+    hookfunction(originalGetFenv, newcclosure(function(level)
+        if not checkcaller() then
+            return {} 
         end
-        return oldNamecall(self, ...)
-    end)
-
-    pcall(function() setreadonly(mt, true) end)
-end
-
--- Optional getfenv hook (only if supported)
-local envFuncs = getrenv and getrenv().getfenv
-if envFuncs and hookfunction then
-    pcall(function()
-        hookfunction(envFuncs, newcclosure(function(level)
-            if not checkcaller() then
-                return {} -- prevent access
-            end
-            return envFuncs(level)
-        end))
-    end)
+        return originalGetFenv(level)
+    end))
 end
