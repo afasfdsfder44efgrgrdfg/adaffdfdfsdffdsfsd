@@ -1,3 +1,14 @@
+if not LPH_OBFUSCATED then
+    LPH_JIT_MAX = function(...)
+        return (...)
+    end
+    LPH_NO_VIRTUALIZE = function(...)
+        return (...)
+    end
+end
+
+LPH_JIT_MAX(function()
+
 local allowedPlaceIds = {
     [2788229376] = true,
 }
