@@ -1,16 +1,5 @@
--- Stub out JIT/virtualization markers if this script isn't obfuscated
-if not LPH_OBFUSCATED then
-    LPH_JIT_MAX = function(...)
-        return (...)
-    end
-    LPH_NO_VIRTUALIZE = function(...)
-        return (...)
-    end
-end
-
--- Only allow this script to run in specified places
 local allowedPlaceIds = {
-    [2788229376] = true,
+    [2788229376] = true
 }
 
 repeat task.wait() until game:IsLoaded()
@@ -19,13 +8,12 @@ if not allowedPlaceIds[game.PlaceId] then
     return
 end
 
--- Grab services and player
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Hook namecall to block kicks
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
+
 local oldNamecall = mt.__namecall
 mt.__namecall = newcclosure(function(self, ...)
     local method = getnamecallmethod()
@@ -35,11 +23,12 @@ mt.__namecall = newcclosure(function(self, ...)
     end
     return oldNamecall(self, ...)
 end)
+
 setreadonly(mt, true)
 
--- Hook getfenv to hide environments from non-callers
-local originalGetFenv = getrenv().getfenv
-if typeof(originalGetFenv) == "function" then
+local env = getrenv()
+if env and type(env.getfenv) == "function" then
+    local originalGetFenv = env.getfenv
     hookfunction(originalGetFenv, newcclosure(function(level)
         if not checkcaller() then
             return {}
