@@ -1,38 +1,38 @@
-local allowedPlaceIds = {
-    [2788229376] = true
-}
+-- Da Hood Anti-Kick Bypass
+local function DaHoodAC()
+    if not getgenv().__DaHoodBypassInitialized then
+        getgenv().__DaHoodBypassInitialized = true
+        -- Debug print (optional)
+        if getgenv().Krylon and getgenv().Krylon.Debug then
+            print("[Bypass] Initializing Da Hood kick bypass...")
+        end
 
-repeat task.wait() until game:IsLoaded()
+        local success, mt = pcall(function() return getrawmetatable(game) end)
+        if success and mt then
+            setreadonly(mt, false)
+            local oldNamecall = mt.__namecall
+            mt.__namecall = newcclosure(function(self, ...)
+                local method = getnamecallmethod()
+                -- block any remote Kick calls not originating from our script
+                if not checkcaller() and (method == "Kick" or method == "kick") then
+                    -- you can increment your own block counter here if desired:
+                    -- blockCount = (blockCount or 0) + 1
+                    return nil
+                end
+                return oldNamecall(self, ...)
+            end)
+            setreadonly(mt, true)
 
-if not allowedPlaceIds[game.PlaceId] then
-    return
+            if getgenv().Krylon and getgenv().Krylon.Debug then
+                print("[Bypass] Da Hood kick bypass active")
+            end
+        else
+            warn("[Bypass] Failed to hook Da Hood metatable")
+        end
+    end
 end
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local mt = getrawmetatable(game)
-setreadonly(mt, false)
-
-local oldNamecall = mt.__namecall
-mt.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    if not checkcaller() and method == "Kick" and self == LocalPlayer then
-        warn("[Bypass] Kick attempt blocked.")
-        return
-    end
-    return oldNamecall(self, ...)
-end)
-
-setreadonly(mt, true)
-
-local env = getrenv()
-if env and type(env.getfenv) == "function" then
-    local originalGetFenv = env.getfenv
-    hookfunction(originalGetFenv, newcclosure(function(level)
-        if not checkcaller() then
-            return {}
-        end
-        return originalGetFenv(level)
-    end))
+-- If we're in Da Hood, run the bypass right away:
+if game.PlaceId == 2788229376 then
+    DaHoodAC()
 end
