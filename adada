@@ -1,27 +1,46 @@
--- Da Hood Mouse.Hit / Target bypass (universal for all executors)
 if game.PlaceId == 2788229376 then
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local Mouse = LocalPlayer:GetMouse()
+
+    -- You MUST define these functions
+    local function GetClosestPlayer()
+        -- Implement your closest-player logic here
+        return nil -- placeholder
+    end
+
+    local function PredictTargetPosition(player)
+        -- Implement your prediction logic here
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            return player.Character.HumanoidRootPart.Position
+        end
+        return nil
+    end
+
+    -- Hooking the metatable
     local mt = getrawmetatable(game)
     setreadonly(mt, false)
     local old = mt.__index
 
     mt.__index = newcclosure(function(self, key)
-        if not checkcaller() and self == game:GetService("Players").LocalPlayer:GetMouse() then
+        if not checkcaller() and self == Mouse then
+            local target = GetClosestPlayer()
             if key == "Hit" then
-                local target = GetClosestPlayer()
                 if target then
                     local pos = PredictTargetPosition(target)
                     if pos then
                         return CFrame.new(pos)
                     end
                 end
+                return old(self, key)
             elseif key == "Target" then
-                local target = GetClosestPlayer()
-                if target then
-                    local pos = PredictTargetPosition(target)
-                    if pos then
-                        return CFrame.new(pos)
+                if target and target.Character then
+                    local part = target.Character:FindFirstChild("HumanoidRootPart") or target.Character:FindFirstChildWhichIsA("BasePart")
+                    if part then
+                        return part
                     end
                 end
+                return old(self, key)
             end
         end
         return old(self, key)
