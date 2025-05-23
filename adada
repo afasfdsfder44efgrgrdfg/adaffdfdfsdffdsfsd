@@ -1,68 +1,38 @@
-if not LPH_OBFUSCATED then
-    LPH_JIT_MAX = function(...) return (...) end
-    LPH_NO_VIRTUALIZE = function(...) return (...) end
+local allowedPlaceIds = {
+    [2788229376] = true,
+}
+
+repeat task.wait() until game:IsLoaded()
+
+if not allowedPlaceIds[game.PlaceId] then
+    return
 end
 
-LPH_JIT_MAX(function()
 
-    if game.PlaceId == 2788229376 then
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
-        local Mouse = LocalPlayer:GetMouse()
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
-        -- Placeholder: define your logic
-        local function GetClosestPlayer()
-            local closest, shortest = nil, math.huge
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    local dist = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-                    if dist < shortest then
-                        closest, shortest = player, dist
-                    end
-                end
-            end
-            return closest
-        end
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
 
-        local function PredictTargetPosition(player)
-            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                -- Basic prediction based on velocity
-                local hrp = player.Character.HumanoidRootPart
-                return hrp.Position + (hrp.Velocity * 0.125) -- Tune this factor if needed
-            end
-            return nil
-        end
-
-        -- Hooking the metatable
-        local mt = getrawmetatable(game)
-        setreadonly(mt, false)
-        local old = mt.__index
-
-        mt.__index = newcclosure(function(self, key)
-            if not checkcaller() and self == Mouse then
-                local target = GetClosestPlayer()
-                if key == "Hit" then
-                    if target then
-                        local pos = PredictTargetPosition(target)
-                        if pos then
-                            return CFrame.new(pos)
-                        end
-                    end
-                    return old(self, key)
-                elseif key == "Target" then
-                    if target and target.Character then
-                        local part = target.Character:FindFirstChild("HumanoidRootPart") or target.Character:FindFirstChildWhichIsA("BasePart")
-                        if part then
-                            return part
-                        end
-                    end
-                    return old(self, key)
-                end
-            end
-            return old(self, key)
-        end)
-
-        setreadonly(mt, true)
+local oldNamecall = mt.__namecall
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if not checkcaller() and method == "Kick" and self == LocalPlayer then
+        warn("[Bypass] Kick attempt blocked.")
+        return 
     end
-
+    return oldNamecall(self, ...)
 end)
+
+setreadonly(mt, true)
+
+local originalGetFenv = getrenv().getfenv
+if typeof(originalGetFenv) == "function" then
+    hookfunction(originalGetFenv, newcclosure(function(level)
+        if not checkcaller() then
+            return {} 
+        end
+        return originalGetFenv(level)
+    end))
+end
