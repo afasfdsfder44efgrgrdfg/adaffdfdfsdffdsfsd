@@ -69,7 +69,7 @@ return {
     },
     {
         ID = 81149506710836,
-        Details = { Name = "Zero Hood", Argument = "UpdateMousePos", Remote = "MOUSEPOS", BodyEffects = "K.O" }
+        Details = { Name = "Zero Hood", Argument = "UpdateMousePos", Remote = "MOUSE", BodyEffects = "K.O" }
     },
     {
         ID = 71189885129233,
