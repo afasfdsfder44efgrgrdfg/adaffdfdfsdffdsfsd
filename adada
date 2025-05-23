@@ -1,38 +1,42 @@
--- Da Hood Anti-Kick Bypass
-local function DaHoodAC()
-    if not getgenv().__DaHoodBypassInitialized then
-        getgenv().__DaHoodBypassInitialized = true
-        -- Debug print (optional)
-        if getgenv().Krylon and getgenv().Krylon.Debug then
-            print("[Bypass] Initializing Da Hood kick bypass...")
-        end
+-- Whitelisted PlaceIds
+local allowedPlaceIds = {
+    [2788229376] = true,
+}
 
-        local success, mt = pcall(function() return getrawmetatable(game) end)
-        if success and mt then
-            setreadonly(mt, false)
-            local oldNamecall = mt.__namecall
-            mt.__namecall = newcclosure(function(self, ...)
-                local method = getnamecallmethod()
-                -- block any remote Kick calls not originating from our script
-                if not checkcaller() and (method == "Kick" or method == "kick") then
-                    -- you can increment your own block counter here if desired:
-                    -- blockCount = (blockCount or 0) + 1
-                    return nil
-                end
-                return oldNamecall(self, ...)
-            end)
-            setreadonly(mt, true)
+-- Wait for game to load
+repeat task.wait() until game:IsLoaded()
 
-            if getgenv().Krylon and getgenv().Krylon.Debug then
-                print("[Bypass] Da Hood kick bypass active")
-            end
-        else
-            warn("[Bypass] Failed to hook Da Hood metatable")
-        end
+-- Abort if not in allowed game
+if not allowedPlaceIds[game.PlaceId] then return end
+
+-- Services and Player
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Metatable Bypass Kick
+local mt = getrawmetatable(game)
+local backup = mt.__namecall
+
+setreadonly(mt, false)
+
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if not checkcaller() and self == LocalPlayer and method == "Kick" then
+        warn("[Bypass] Blocked Kick Attempt.")
+        return nil
     end
-end
+    return backup(self, ...)
+end)
 
--- If we're in Da Hood, run the bypass right away:
-if game.PlaceId == 2788229376 then
-    DaHoodAC()
+setreadonly(mt, true)
+
+-- Safe fenv Hook (optional, some executors don't allow this)
+local envFuncs = getrenv and getrenv().getfenv
+if typeof(envFuncs) == "function" and hookfunction then
+    hookfunction(envFuncs, newcclosure(function(level)
+        if not checkcaller() then
+            return {} -- block unauthorized use
+        end
+        return envFuncs(level)
+    end))
 end
