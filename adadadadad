@@ -68,6 +68,10 @@ return {
         Details = { Name = "Der Hood", Argument = "DERHOODMOUSEPOS666^", Remote = "MainRemoteEvent", BodyEffects = "K.O" }
     },
     {
+        ID = 81149506710836,
+        Details = { Name = "Zero Hood", Argument = "UpdateMousePos^", Remote = "MOUSEPOS", BodyEffects = "K.O" }
+    },
+    {
         ID = 71189885129233,
         Details = { Name = "Del Hood Aim", Argument = "UpdateMousePos", Remote = "MainEvent", BodyEffects = "K.O" }
     },
