@@ -1,50 +1,68 @@
-if game.PlaceId == 2788229376 then
-    local Players = game:GetService("Players")
-    local LocalPlayer = Players.LocalPlayer
-    local Mouse = LocalPlayer:GetMouse()
-
-    -- You MUST define these functions
-    local function GetClosestPlayer()
-        -- Implement your closest-player logic here
-        return nil -- placeholder
-    end
-
-    local function PredictTargetPosition(player)
-        -- Implement your prediction logic here
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            return player.Character.HumanoidRootPart.Position
-        end
-        return nil
-    end
-
-    -- Hooking the metatable
-    local mt = getrawmetatable(game)
-    setreadonly(mt, false)
-    local old = mt.__index
-
-    mt.__index = newcclosure(function(self, key)
-        if not checkcaller() and self == Mouse then
-            local target = GetClosestPlayer()
-            if key == "Hit" then
-                if target then
-                    local pos = PredictTargetPosition(target)
-                    if pos then
-                        return CFrame.new(pos)
-                    end
-                end
-                return old(self, key)
-            elseif key == "Target" then
-                if target and target.Character then
-                    local part = target.Character:FindFirstChild("HumanoidRootPart") or target.Character:FindFirstChildWhichIsA("BasePart")
-                    if part then
-                        return part
-                    end
-                end
-                return old(self, key)
-            end
-        end
-        return old(self, key)
-    end)
-
-    setreadonly(mt, true)
+if not LPH_OBFUSCATED then
+    LPH_JIT_MAX = function(...) return (...) end
+    LPH_NO_VIRTUALIZE = function(...) return (...) end
 end
+
+LPH_JIT_MAX(function()
+
+    if game.PlaceId == 2788229376 then
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local Mouse = LocalPlayer:GetMouse()
+
+        -- Placeholder: define your logic
+        local function GetClosestPlayer()
+            local closest, shortest = nil, math.huge
+            for _, player in pairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    local dist = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                    if dist < shortest then
+                        closest, shortest = player, dist
+                    end
+                end
+            end
+            return closest
+        end
+
+        local function PredictTargetPosition(player)
+            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                -- Basic prediction based on velocity
+                local hrp = player.Character.HumanoidRootPart
+                return hrp.Position + (hrp.Velocity * 0.125) -- Tune this factor if needed
+            end
+            return nil
+        end
+
+        -- Hooking the metatable
+        local mt = getrawmetatable(game)
+        setreadonly(mt, false)
+        local old = mt.__index
+
+        mt.__index = newcclosure(function(self, key)
+            if not checkcaller() and self == Mouse then
+                local target = GetClosestPlayer()
+                if key == "Hit" then
+                    if target then
+                        local pos = PredictTargetPosition(target)
+                        if pos then
+                            return CFrame.new(pos)
+                        end
+                    end
+                    return old(self, key)
+                elseif key == "Target" then
+                    if target and target.Character then
+                        local part = target.Character:FindFirstChild("HumanoidRootPart") or target.Character:FindFirstChildWhichIsA("BasePart")
+                        if part then
+                            return part
+                        end
+                    end
+                    return old(self, key)
+                end
+            end
+            return old(self, key)
+        end)
+
+        setreadonly(mt, true)
+    end
+
+end)
