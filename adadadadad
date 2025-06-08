@@ -1,7 +1,7 @@
 return {
     [2788229376] = true, -- da hood
-    [133331500532271] = true, -- dea hood
+    [138893461870088] = true, -- dea hood
     [100160373423399] = true, -- der hood
-    [106858561500651] = true, -- dee hood
+    [133331500532271] = true, -- dee hood
     [9825515356] = true, -- hood custom
 }
