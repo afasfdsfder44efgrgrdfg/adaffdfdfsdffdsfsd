@@ -1,8 +1,8 @@
 return {
     [2788229376] = true, -- da hood
-    [109074849883859] = true, -- dea hood
-    [99630546794714] = true, -- der hood
-    [90516649929041] = true, -- dee hood
+    [90482529482027] = true, -- dea hood
+    [86112607983691] = true, -- der hood
+    [107057164421687] = true, -- dee hood
     [9825515356] = true, -- hood custom
-    [83022801532074] = true, -- hood custom
+    [75159825516372] = true, -- Track Aim trainer 
 }
